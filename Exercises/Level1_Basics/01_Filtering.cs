@@ -16,7 +16,8 @@ public static class Filtering
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetExpensiveProducts(List<Product> products, decimal minPrice)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.Price > minPrice);
     }
 
     // -------------------------------------------------------------------------
@@ -25,7 +26,8 @@ public static class Filtering
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetInStockProducts(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.InStock);
     }
 
     // -------------------------------------------------------------------------
@@ -35,7 +37,8 @@ public static class Filtering
     // -------------------------------------------------------------------------
     public static IEnumerable<Employee> GetEmployeesInDepartment(List<Employee> employees, string department)
     {
-        throw new NotImplementedException();
+        return employees
+            .Where(e => e.Department.ToLower() == department.ToLower());
     }
 
     // -------------------------------------------------------------------------
@@ -45,7 +48,8 @@ public static class Filtering
     // -------------------------------------------------------------------------
     public static IEnumerable<Order> GetRecentOrders(List<Order> orders, DateOnly fromDate)
     {
-        throw new NotImplementedException();
+        return orders
+            .Where(o => o.Date >= fromDate);
     }
 
     // -------------------------------------------------------------------------
@@ -55,7 +59,8 @@ public static class Filtering
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetHighRatedInStockProducts(List<Product> products, double minRating)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.InStock && p.Rating >= minRating);
     }
 
     // -------------------------------------------------------------------------
@@ -67,6 +72,7 @@ public static class Filtering
     public static IEnumerable<Employee> GetSeniorHighEarners(
         List<Employee> employees, DateOnly beforeDate, decimal minSalary)
     {
-        throw new NotImplementedException();
+        return employees
+            .Where(e => e.HireDate < beforeDate && e.Salary > minSalary);
     }
 }
