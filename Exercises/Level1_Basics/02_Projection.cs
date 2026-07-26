@@ -14,7 +14,8 @@ public static class Projection
     // -------------------------------------------------------------------------
     public static IEnumerable<string> GetProductNames(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Select(p => p.Name);
     }
 
     // -------------------------------------------------------------------------
@@ -23,7 +24,8 @@ public static class Projection
     // -------------------------------------------------------------------------
     public static IEnumerable<(string Name, decimal Price)> GetProductNameAndPrice(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Select(p => (p.Name, p.Price));
     }
 
     // -------------------------------------------------------------------------
@@ -34,7 +36,8 @@ public static class Projection
     // -------------------------------------------------------------------------
     public static IEnumerable<decimal> GetDiscountedPrices(List<Product> products, decimal discountPercent)
     {
-        throw new NotImplementedException();
+        return products
+            .Select(p => p.Price * (1 - discountPercent / 100));
     }
 
     // -------------------------------------------------------------------------
@@ -44,7 +47,8 @@ public static class Projection
     // -------------------------------------------------------------------------
     public static IEnumerable<string> GetEmployeeSummaries(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees
+            .Select(e => $"{e.Name} - {e.Department} ({e.Salary})");
     }
 
     // -------------------------------------------------------------------------
@@ -57,7 +61,16 @@ public static class Projection
     public static IEnumerable<(string ProductName, decimal TotalCost)> GetOrderTotals(
         List<Order> orders, List<Product> products)
     {
-        throw new NotImplementedException();
+        return orders.Join(
+                products,
+                order => order.ProductId,
+                product => product.Id,
+                (order, product) => (
+                    product.Name,
+                    TotalCost: product.Price * order.Quantity
+                )
+        );
+
     }
 
     // -------------------------------------------------------------------------
@@ -68,6 +81,9 @@ public static class Projection
     // -------------------------------------------------------------------------
     public static IEnumerable<string> GetSortedCategories(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Select(p => p.Category)
+            .Distinct()
+            .OrderBy(c => c);
     }
 }
