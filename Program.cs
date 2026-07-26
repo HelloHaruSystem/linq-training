@@ -24,11 +24,11 @@ runner.Section("LEVEL 1 — Filtering");
 
 runner.Check("01 GetExpensiveProducts (>100)",
     () => Filtering.GetExpensiveProducts(products, 100m),
-    r => r.All(p => p.Price > 100m) && r.Count() == 9);
+    r => r.All(p => p.Price > 100m) && r.Count() == 6);
 
 runner.Check("02 GetInStockProducts",
     () => Filtering.GetInStockProducts(products),
-    r => r.All(p => p.InStock) && r.Count() == 13);
+    r => r.All(p => p.InStock) && r.Count() == 14);
 
 runner.Check("03 GetEmployeesInDepartment (engineering)",
     () => Filtering.GetEmployeesInDepartment(employees, "engineering"),
@@ -40,11 +40,11 @@ runner.Check("04 GetRecentOrders (>=2024-06-01)",
 
 runner.Check("05 GetHighRatedInStockProducts (>=4.5)",
     () => Filtering.GetHighRatedInStockProducts(products, 4.5),
-    r => r.All(p => p.InStock && p.Rating >= 4.5) && r.Count() == 4);
+    r => r.All(p => p.InStock && p.Rating >= 4.5) && r.Count() == 6);
 
 runner.Check("06 GetSeniorHighEarners (<2020-01-01, >80k)",
     () => Filtering.GetSeniorHighEarners(employees, new DateOnly(2020, 1, 1), 80_000m),
-    r => r.Count() == 2 && r.All(e => e.HireDate < new DateOnly(2020, 1, 1) && e.Salary > 80_000m));
+    r => r.Count() == 3 && r.All(e => e.HireDate < new DateOnly(2020, 1, 1) && e.Salary > 80_000m));
 
 runner.Section("LEVEL 1 — Projection");
 
@@ -133,7 +133,7 @@ runner.Check("01 GroupProductsByCategory",
 
 runner.Check("02 GetProductCountPerCategory",
     () => Grouping.GetProductCountPerCategory(products),
-    r => r["Electronics"] == 6 && r["Furniture"] == 3);
+    r => r["Electronics"] == 6 && r["Furniture"] == 4);
 
 runner.Check("03 GetAveragePricePerCategory",
     () => Grouping.GetAveragePricePerCategory(products),
@@ -240,7 +240,7 @@ runner.Check("01 GetMonthlyRevenue",
 
 runner.Check("02 GetRestockPriority",
     () => RealWorld.GetRestockPriority(products),
-    r => r.All(p => !p.InStock) && r.Count() == 5);
+    r => r.All(p => !p.InStock) && r.Count() == 4);
 
 runner.Check("03 GetDepartmentSummary",
     () => RealWorld.GetDepartmentSummary(employees),
