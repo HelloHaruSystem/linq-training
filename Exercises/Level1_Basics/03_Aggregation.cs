@@ -15,7 +15,9 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static int CountProductsInCategory(List<Product> products, string category)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.Category.ToLower() == category.ToLower())
+            .Count();
     }
 
     // -------------------------------------------------------------------------
@@ -25,7 +27,9 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static decimal GetTotalInStockValue(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.InStock)
+            .Sum(p => p.Price);
     }
 
     // -------------------------------------------------------------------------
@@ -35,7 +39,10 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static decimal GetAverageSalary(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return Math.Round(
+                employees.Average(e => e.Salary),
+                2
+        );
     }
 
     // -------------------------------------------------------------------------
@@ -45,7 +52,10 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static Product GetTopRatedProduct(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.Id)
+            .First();
     }
 
     // -------------------------------------------------------------------------
@@ -55,7 +65,13 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static decimal GetTotalRevenue(List<Order> orders, List<Product> products)
     {
-        throw new NotImplementedException();
+        return orders
+            .Join(
+                products,
+                order => order.ProductId,
+                product => product.Id,
+                (order, product) => order.Quantity * product.Price)
+        .Sum();
     }
 
     // -------------------------------------------------------------------------
@@ -64,7 +80,7 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static decimal GetSalaryRange(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees.Max(e => e.Salary) - employees.Min(e => e.Salary);
     }
 
     // -------------------------------------------------------------------------
@@ -75,6 +91,16 @@ public static class Aggregation
     // -------------------------------------------------------------------------
     public static string GetProductNamesCsv(List<Product> products)
     {
-        throw new NotImplementedException();
+        //     ", ",
+        //     return string.Join(
+        //     products
+        //         .Select(p => p.Name)
+        //         .OrderBy(name => name)
+        //
+        // );
+        return products
+            .Select(p => p.Name)
+            .OrderBy(name => name)
+            .Aggregate((a, b) => a + ", " + b);
     }
 }
