@@ -15,7 +15,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<string, List<Product>> GroupProductsByCategory(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .GroupBy(p => p.Category)
+            .ToDictionary(
+                g => g.Key,
+                g => g.ToList()
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -25,7 +30,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<string, int> GetProductCountPerCategory(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .GroupBy(p => p.Category)
+            .ToDictionary(
+                 g => g.Key,
+                 g => g.Count()
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -35,7 +45,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<string, decimal> GetAveragePricePerCategory(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .GroupBy(p => p.Category)
+            .ToDictionary(
+                g => g.Key,
+                g => Math.Round(g.Average(p => p.Price), 2)
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -44,7 +59,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<string, decimal> GetTotalSalaryPerDepartment(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees
+            .GroupBy(e => e.Department)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Sum(e => e.Salary)
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -53,7 +73,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<string, Employee> GetTopEarnerPerDepartment(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees
+            .GroupBy(e => e.Department)
+            .ToDictionary(
+                g => g.Key,
+                g => g.OrderByDescending(e => e.Salary).First()
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -63,7 +88,21 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<int, decimal> GetTotalSpendPerCustomer(List<Order> orders, List<Product> products)
     {
-        throw new NotImplementedException();
+        return orders
+            .Join(
+                products,
+                order => order.ProductId,
+                product => product.Id,
+                (order, product) => new
+                {
+                    order.CustomerId,
+                    Total = order.Quantity * product.Price
+                })
+            .GroupBy(x => x.CustomerId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Sum(x => x.Total)
+            );
     }
 
     // -------------------------------------------------------------------------
@@ -74,6 +113,12 @@ public static class Grouping
     // -------------------------------------------------------------------------
     public static Dictionary<int, List<Employee>> GetEmployeesByHireYear(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees
+            .GroupBy(e => e.HireDate.Year)
+            .OrderByDescending(g => g.Key)
+            .ToDictionary(
+                g => g.Key,
+                g => g.OrderBy(e => e.Name).ToList()
+            );
     }
 }

@@ -14,7 +14,8 @@ public static class Sorting
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetProductsByPriceAsc(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .OrderBy(p => p.Price);
     }
 
     // -------------------------------------------------------------------------
@@ -25,7 +26,11 @@ public static class Sorting
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetTopNByRating(List<Product> products, int n)
     {
-        throw new NotImplementedException();
+        return products
+            .OrderByDescending(p => p.Rating)
+            .ThenBy(p => p.Id)
+            .Take(n)
+            .ToList();
     }
 
     // -------------------------------------------------------------------------
@@ -35,7 +40,9 @@ public static class Sorting
     // -------------------------------------------------------------------------
     public static IEnumerable<Employee> GetEmployeesSortedByDeptThenSalary(List<Employee> employees)
     {
-        throw new NotImplementedException();
+        return employees
+            .OrderBy(e => e.Department)
+            .ThenByDescending(e => e.Salary);
     }
 
     // -------------------------------------------------------------------------
@@ -45,7 +52,10 @@ public static class Sorting
     // -------------------------------------------------------------------------
     public static IEnumerable<Product> GetInStockSortedByCategoryThenPrice(List<Product> products)
     {
-        throw new NotImplementedException();
+        return products
+            .Where(p => p.InStock)
+            .OrderBy(p => p.Category)
+            .ThenByDescending(p => p.Price);
     }
 
     // -------------------------------------------------------------------------
@@ -55,6 +65,8 @@ public static class Sorting
     // -------------------------------------------------------------------------
     public static IEnumerable<Order> GetOrdersMostRecentFirst(List<Order> orders)
     {
-        throw new NotImplementedException();
+        return orders
+            .OrderByDescending(o => o.Date)
+            .ThenByDescending(o => o.Quantity);
     }
 }
